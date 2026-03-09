@@ -238,7 +238,7 @@ export const renderDashboard = (user) => {
                       </div>
 
                       <div style="display: flex; gap: 0.5rem;">
-                        <button id="bulk-select-btn" class="btn-icon" title="Select Multiple" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--background-color); color: var(--text-secondary);">
+                        <button id="bulk-select-btn" class="btn-icon bulk-select-btn" title="Select Multiple">
                            <i class="bi bi-check2-square me-1"></i> Select
                         </button>
                         <button id="add-income-btn" type="button"><i class="bi bi-plus-circle-fill"></i> Add Income</button>

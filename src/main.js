@@ -614,7 +614,12 @@ function showDashboard(user) {
   let visibleCount = 8;
 
   const renderExpenses = () => {
-    const filterValue = filterSelect.value;
+    let filterValue = filterSelect.value;
+
+    // Default to current month if 'all' is selected but we want current month on login
+    // However, if the user explicitly chooses 'all', we should show all.
+    // The issue is that filterSelect.value is 'all' before updateFilterOptions runs.
+
     let dateFilteredExpenses = allExpenses;
 
     // 1. Filter by Date (Base Filter)
@@ -1009,6 +1014,11 @@ function showDashboard(user) {
     const currentSelection = filterSelect.value;
     const dates = new Set();
 
+    // Always ensure current month is in the set even if no transactions
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    dates.add(currentMonthKey);
+
     allExpenses.forEach(exp => {
       const d = new Date(exp.date);
       if (!isNaN(d.getTime())) {
@@ -1030,17 +1040,29 @@ function showDashboard(user) {
       filterSelect.appendChild(option);
     });
 
-    // Restore selection if it still exists
-    if (Array.from(filterSelect.options).some(opt => opt.value === currentSelection)) {
+    // On first load or if no valid selection, default to current month
+    if (!currentSelection || currentSelection === '') {
+      filterSelect.value = currentMonthKey;
+    } else if (Array.from(filterSelect.options).some(opt => opt.value === currentSelection)) {
+      // Restore selection if it still exists
       filterSelect.value = currentSelection;
+    } else {
+      filterSelect.value = currentMonthKey;
     }
   };
 
   filterSelect.addEventListener('change', () => {
+    filterSelect.dataset.userChanged = "true";
     visibleCount = 8; // Reset pagination on month change
-    renderExpenses(); // Re-render should respect date filter AND clear category if needed? 
-    // Optionally clear category filter on date change to avoid confusion
-    // selectedCategoryFilter = null; 
+    const selectedMonth = filterSelect.value;
+
+    if (selectedMonth !== 'all') {
+      currentBudgetMonth = selectedMonth;
+      updateBudgetMonthLabel();
+      updateBudgetUI();
+    }
+
+    renderExpenses();
   });
 
 
@@ -1077,6 +1099,14 @@ function showDashboard(user) {
     currentBudgetMonth = getYearMonth(date);
     updateBudgetMonthLabel();
     updateBudgetUI();
+
+    // Sync filter dropdown if possible
+    if (Array.from(filterSelect.options).some(opt => opt.value === currentBudgetMonth)) {
+      filterSelect.value = currentBudgetMonth;
+    } else {
+      filterSelect.value = 'all'; // Fallback if no transactions for that month
+    }
+
     renderExpenses(); // Also re-render list to reflect month change if filter is active
   };
 
@@ -1366,6 +1396,17 @@ function showDashboard(user) {
     allExpenses = expenses;
     updateFilterOptions();
     updateBudgetMonthOptions(); // Update month dropdown
+
+    // Force current month on first data load if filter is still 'all'
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    if (filterSelect.value === 'all' && !filterSelect.dataset.userChanged) {
+      filterSelect.value = currentMonthKey;
+      // Sync budget
+      currentBudgetMonth = currentMonthKey;
+      updateBudgetMonthLabel();
+    }
+
     renderExpenses();
     updateBudgetUI();
     // updateInsights is now called inside renderExpenses
