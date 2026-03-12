@@ -336,17 +336,17 @@ input:checked+.slider:before {
 
 /* Dark mode */
 [data-theme="dark"] .stat-card--balance {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(114, 117, 243, 0.9) 100%);
   box-shadow: 0 3px 16px rgba(99, 102, 241, 0.2);
 }
 
 [data-theme="dark"] .stat-card--income {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(13, 148, 105, 0.9) 100%);
   box-shadow: 0 3px 16px rgba(16, 185, 129, 0.2);
 }
 
 [data-theme="dark"] .stat-card--expense {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.25) 0%, rgba(239, 68, 68, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.25) 0%, rgba(228, 88, 88, 0.9) 100%);
   box-shadow: 0 3px 16px rgba(244, 63, 94, 0.2);
 }
 
@@ -2233,13 +2233,21 @@ canvas {
 }
 
 .insight-card--info {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #c15ef3, #9134ef);
   color: white;
+  opacity: 0.9;
 }
 
 .insight-card--primary {
-  background: linear-gradient(135deg, #818cf8, #6366f1);
+  background: linear-gradient(135deg, #26b694, #2684f1);
   color: white;
+  opacity: 0.9;
+}
+
+.insight-card--danger {
+  background: linear-gradient(135deg, #db849e, #d3536b);
+  color: white;
+  opacity: 0.9;
 }
 
 /* ─── Bulk Actions ────────────────────────────── */

@@ -1225,7 +1225,17 @@ function showDashboard(user) {
       }
     }
 
-    // 3. Dynamic Power Tip
+    // 3. Net Balance Insight
+    if (currentSpend > currentIncome && currentIncome > 0) {
+      insights.push({
+        icon: 'bi-graph-down-arrow',
+        title: 'Balance Alert',
+        text: `Your spending (<span style="color: #ffcfcf; font-weight: 700;">₹${currentSpend.toFixed(0)}</span>) has exceeded your income (<span style="color: #cfffcf; font-weight: 700;">₹${currentIncome.toFixed(0)}</span>) this month. ⚠️`,
+        color: 'danger'
+      });
+    }
+
+    // 4. Dynamic Power Tip
     const budgetLimit = allBudgets[targetMonthKey] || 0;
     if (budgetLimit > 0 && currentSpend > budgetLimit) {
       insights.push({
@@ -1346,10 +1356,10 @@ function showDashboard(user) {
         msg = "🙂 You've used over half your budget — slow down a little.";
         cls = 'budget-message--warn';
       } else if (rawPct <= 100) {
-        msg = "⚠️ Almost there! Only ₹" + remaining.toFixed(0) + " left for this month.";
+        msg = "😬 Careful! You've almost reached your limit. Only ₹" + remaining.toFixed(0) + " left.";
         cls = 'budget-message--warn';
       } else {
-        msg = "😬 You've gone over budget by ₹" + (currentMonthExpenses - limit).toFixed(0) + ". Time to pause spending!";
+        msg = "🛑 You've gone over budget by ₹" + (currentMonthExpenses - limit).toFixed(0) + ". Time to pause spending!";
         cls = 'budget-message--danger';
       }
       msgEl.textContent = msg;
