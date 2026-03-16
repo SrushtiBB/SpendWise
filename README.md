@@ -1,56 +1,66 @@
-# SpendWise — Personal Expense Tracker (v2)
+# 💸 SpendWise — Smart Personal Expense Tracker
 
-SpendWise is a modern personal finance web app for tracking income and expenses, visualizing spending patterns, and managing monthly budgets with smart feedback.
+SpendWise is a modern web app that helps you manage your money with confidence. Track income and expenses, monitor spending patterns, and stay in control of your monthly budget — all from a clean and interactive dashboard.
 
-## Live Demo
+## 🌐 Live Demo
 
-- App: **https://personal-expenses-tracker-gamma.vercel.app/**
+👉 **[Try SpendWise](https://personal-expenses-tracker-gamma.vercel.app/)**
 
-## What's New in v2
+---
 
-- Refreshed dashboard experience with cleaner layout and improved visual hierarchy.
-- Monthly budget progress with warnings and contextual messaging.
-- Category, trend, and income-vs-expense chart tabs for faster analysis.
-- Bulk-select and search workflows for transaction management.
-- Light/Dark theme toggle with persisted user preference.
+## ✨ Highlights
 
-## Core Features
+- 📌 Simple and intuitive expense tracking
+- 📊 Interactive analytics and visual reports
+- 🎯 Monthly budgeting with progress indicators
+- 🔍 Fast search and transaction management tools
+- 🌗 Light/Dark theme support for better usability
 
-### Authentication
-- Email/password signup and login with Firebase Authentication.
-- Session persistence configured for browser session usage.
+---
 
-### Transactions
-- Add income or expense transactions.
-- Edit and delete existing entries.
-- Search transactions by text.
-- Multi-select transactions for bulk deletion.
+## 🚀 Features
 
-### Insights & Analytics
-- Real-time totals for balance, income, and expenses.
-- Category distribution chart.
-- Monthly trends chart.
-- Income vs expense comparison chart.
+### 🔐 Authentication
+- Sign up and log in securely using email/password
+- Session-based authentication with Firebase
 
-### Budgeting
-- Set month-wise budget limits.
-- Visual budget progress indicator.
-- Dynamic status and warning message on over-spend.
+### 💰 Transactions
+- Add income and expense entries
+- Update or delete existing transactions
+- Search transactions instantly
+- Select multiple entries for bulk delete workflows
 
-### UX
-- Responsive interface.
-- Personalized greeting on dashboard.
-- Theme support (light/dark) with local preference storage.
+### 📈 Insights & Analytics
+- Real-time balance, total income, and total expense cards
+- Category distribution chart
+- Monthly trend chart
+- Income vs expense comparison chart
 
-## Tech Stack
+### 🧾 Budgeting
+- Set monthly budget targets
+- Visual budget utilization progress
+- Dynamic warnings when nearing or exceeding budget
+
+### 🎨 User Experience
+- Responsive layout for desktop and smaller screens
+- Personalized dashboard greeting
+- Theme preference (light/dark) saved locally
+
+---
 
 - **Frontend:** HTML, CSS, JavaScript (Vite)
 - **Charts:** Chart.js
 - **Backend Services:** Firebase Authentication + Cloud Firestore
 
-## Project Setup
+- **Frontend:** HTML, CSS, JavaScript (Vite)
+- **Charts:** Chart.js
+- **Backend Services:** Firebase Authentication + Cloud Firestore
 
-### 1) Clone repository
+---
+
+## ⚙️ Getting Started
+
+### 1) Clone the repository
 
 ```bash
 git clone https://github.com/Sanmati-u-s/SpendWise.git
@@ -65,14 +75,15 @@ npm install
 
 ### 3) Configure Firebase
 
-1. Create a Firebase project in the [Firebase Console](https://console.firebase.google.com/).
-2. Add a Web App and copy the Firebase config object.
-3. Update `src/firebase.js` with your project credentials.
-4. Enable:
-   - Authentication (Email/Password)
-   - Cloud Firestore
+1. Create a Firebase project in the [Firebase Console](https://console.firebase.google.com/)
+2. Add a **Web App** in your Firebase project
+3. Copy the Firebase config object
+4. Update `src/firebase.js` with your Firebase credentials
+5. Enable:
+   - ✅ Authentication (Email/Password)
+   - ✅ Cloud Firestore
 
-### 4) Run locally
+### 4) Run the app locally
 
 ```bash
 npm run dev
@@ -85,20 +96,26 @@ npm run build
 npm run preview
 ```
 
-## Scripts
+---
 
-- `npm run dev` — start development server
-- `npm run build` — create production build
-- `npm run preview` — preview production build locally
+## 📜 Available Scripts
 
-## Suggested Roadmap
+- `npm run dev` — Start development server
+- `npm run build` — Build production assets
+- `npm run preview` — Preview production build locally
 
-- CSV/PDF transaction export
-- Recurring transactions
-- Category budget caps
-- Social login providers
-- PWA + offline mode
+---
 
-## License
+## 🧠 Future Enhancements
 
-This project is licensed under the terms of the [LICENSE](./LICENSE) file.
+- 📤 Export data as CSV/PDF
+- 🔁 Recurring transaction support
+- 🧩 Category-wise budget caps
+- 🔑 Social login providers
+- 📱 PWA + offline support
+
+---
+
+## 📄 License
+
+This project is licensed under the terms in [LICENSE](./LICENSE).
