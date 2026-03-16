@@ -1,76 +1,119 @@
-# SpendWise - Personal Expenses Tracker
+# 💸 SpendWise — Smart Personal Expense Tracker
 
-A simple tool to help you track your spending and manage your everyday better.
+SpendWise is a modern web app that helps you manage your money with confidence. Track income and expenses, monitor spending patterns, and stay in control of your monthly budget — all from a clean and interactive dashboard.
 
-## 🚀 Live Demo
+## 🌐 Live Demo
 
-**[Visit SpendWise](https://personal-expenses-tracker-gamma.vercel.app/)**
+👉 **[Try SpendWise](https://personal-expenses-tracker-gamma.vercel.app/)**
 
-## 🚀 Key Features
+---
 
-### 💸 Transactions
+## ✨ Highlights
 
-- **Add Transaction**: Add Income / Expense with description, category, amount and date.
-- **Search & Filter**: Find any transaction instantly by typing its name.
-- **Delete & Update**: Click on any transaction to update & hover to view delete option / select multiple transactions to delete.
+- 📌 Simple and intuitive expense tracking
+- 📊 Interactive analytics and visual reports
+- 🎯 Monthly budgeting with progress indicators
+- 🔍 Fast search and transaction management tools
+- 🌗 Light/Dark theme support for better usability
 
-### 📊 Visual Dashboard
+---
 
-- **Interactive Charts**: A clear breakdown of your spending by category.
-- **Spending Trends**: Track your income and expenses over the last 12 months.
-- **Live Stats**: Real-time view of your balance, total earnings, and spending.
+## 🚀 Features
 
-### 💡 Smart Insights
+### 🔐 Authentication
+- Sign up and log in securely using email/password
+- Session-based authentication with Firebase
 
-- **Monthly Comparisons**: Know exactly if you're spending more or less than last month.
-- **Top Categories**: Automatically identifies where most of your money is going.
-- **Power Tips**: Personalized advice based on your current budget and savings.
+### 💰 Transactions
+- Add income and expense entries
+- Update or delete existing transactions
+- Search transactions instantly
+- Select multiple entries for bulk delete workflows
 
-### 📅 Budgeting & Control
+### 📈 Insights & Analytics
+- Real-time balance, total income, and total expense cards
+- Category distribution chart
+- Monthly trend chart
+- Income vs expense comparison chart
 
-- **Custom Limits**: Set a unique spending goal for every month.
-- **Progress Alerts**: Get visual warnings as you approach your budget limit.
+### 🧾 Budgeting
+- Set monthly budget targets
+- Visual budget utilization progress
+- Dynamic warnings when nearing or exceeding budget
+
+### 🎨 User Experience
+- Responsive layout for desktop and smaller screens
+- Personalized dashboard greeting
+- Theme preference (light/dark) saved locally
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript.
-- **Charts**: Chart.js.
-- **Database**: Firebase (Auth & Firestore).
+- **Frontend:** HTML, CSS, JavaScript (Vite)
+- **Charts:** Chart.js
+- **Backend Services:** Firebase Authentication + Cloud Firestore
 
-## ⚙️ Setup
+---
 
-Follow these steps to get a local copy of SpendWise up and running:
+## ⚙️ Getting Started
 
-1. **Clone the Repository**:
+### 1) Clone the repository
 
-   ```bash
-   git clone https://github.com/Sanmati-u-s/SpendWise.git
-   cd SpendWise
-   ```
-2. **Install Dependencies**:
-   Ensure you have [Node.js](https://nodejs.org/) installed, then run:
+```bash
+git clone https://github.com/Sanmati-u-s/SpendWise.git
+cd SpendWise
+```
 
-   ```bash
-   npm install
-   ```
-3. **Configure Firebase**:
+### 2) Install dependencies
 
-   - Create a project in the [Firebase Console](https://console.firebase.google.com/).
-   - Add a "Web App" to your project and copy the `firebaseConfig` object.
-   - Open `src/firebase.js` and update it with your configuration keys.
-   - Enable **Authentication** (Email/Password) and **Cloud Firestore**.
-4. **Initialize Firestore**:
+```bash
+npm install
+```
 
-   - Create a Firestore Database in "Test Mode" or apply the recommended security rules (see below).
-5. **Run the Development Server**:
+### 3) Configure Firebase
 
-   ```bash
-   npm run dev
-   ```
+1. Create a Firebase project in the [Firebase Console](https://console.firebase.google.com/)
+2. Add a **Web App** in your Firebase project
+3. Copy the Firebase config object
+4. Update `src/firebase.js` with your Firebase credentials
+5. Enable:
+   - ✅ Authentication (Email/Password)
+   - ✅ Cloud Firestore
 
-## 🔮 Future Directions
+### 4) Run the app locally
 
-* **Data Export**: One-click download of your transaction history as CSV or PDF.
-* **Social Auth**: Support for Google and Apple sign-in.
-* **Gamification**: Badges and achievements for hitting savings milestones.
-* **PWA**: Installable mobile app with offline capabilities.
+```bash
+npm run dev
+```
+
+### 5) Build for production
+
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 📜 Available Scripts
+
+- `npm run dev` — Start development server
+- `npm run build` — Build production assets
+- `npm run preview` — Preview production build locally
+
+---
+
+## 🧠 Future Enhancements
+
+- 📤 Export data as CSV/PDF
+- 🔁 Recurring transaction support
+- 🧩 Category-wise budget caps
+- 🔑 Social login providers
+- 📱 PWA + offline support
+
+---
+
+## 📄 License
+
+This project is licensed under the terms in [LICENSE](./LICENSE).
