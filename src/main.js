@@ -1,5 +1,5 @@
 import './style.css';
-import { initAuth, registerUser, loginUser, logoutUser } from './auth';
+import { initAuth, registerUser, loginUser, logoutUser, updateUsername } from './auth';
 import { addExpense, subscribeToExpenses, deleteExpense, updateExpense, setMonthlyBudget, subscribeToBudget } from './db';
 import { renderLogin, renderSignup, renderDashboard } from './ui';
 import Chart from 'chart.js/auto';
@@ -12,6 +12,7 @@ let expensesCleanup = null;
 let budgetCleanup = null;
 let currentEditingId = null;
 let currentBudgetLimit = null;
+let currentChartYear = new Date().getFullYear();
 
 // Theme Management
 const getPreferredTheme = () => {
@@ -155,6 +156,105 @@ function showDashboard(user) {
       console.error(error);
     }
   });
+
+  // Setup Profile Modal
+  const profileModal = document.getElementById('edit-profile-modal');
+  const profileBtn = document.getElementById('profile-btn');
+  const closeProfileBtn = document.getElementById('close-profile-modal-btn');
+  const profileForm = document.getElementById('edit-profile-form');
+  
+  const profileView = document.getElementById('profile-view-mode');
+  const enableEditBtn = document.getElementById('enable-edit-profile-btn');
+  const cancelEditBtn = document.getElementById('cancel-edit-profile-btn');
+
+  if (profileBtn && profileModal) {
+    profileBtn.addEventListener('click', () => {
+      profileModal.classList.add('active');
+      // Always reset to view mode on open
+      if (profileView) profileView.style.display = 'block';
+      if (profileForm) profileForm.style.display = 'none';
+      
+      const currentUsernameDisplay = document.getElementById('current-username-display');
+      if (currentUsernameDisplay) {
+         currentUsernameDisplay.textContent = user.displayName || 'No name set';
+      }
+      if (profileForm && profileForm.username) {
+         profileForm.username.value = user.displayName || '';
+      }
+    });
+  }
+
+  if (closeProfileBtn) {
+    closeProfileBtn.addEventListener('click', () => {
+      profileModal.classList.remove('active');
+    });
+  }
+
+  if (profileModal) {
+    profileModal.addEventListener('click', (e) => {
+      if (e.target === profileModal) {
+        profileModal.classList.remove('active');
+      }
+    });
+  }
+
+  if (enableEditBtn && profileForm && profileView) {
+    enableEditBtn.addEventListener('click', () => {
+      profileView.style.display = 'none';
+      profileForm.style.display = 'block';
+    });
+  }
+
+  if (cancelEditBtn && profileForm && profileView) {
+    cancelEditBtn.addEventListener('click', () => {
+      profileView.style.display = 'block';
+      profileForm.style.display = 'none';
+    });
+  }
+
+  if (profileForm) {
+    profileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newUsername = e.target.username.value.trim();
+      if (!newUsername) return;
+
+      const submitBtn = profileForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Saving...';
+      submitBtn.disabled = true;
+
+      try {
+        await updateUsername(user, newUsername);
+
+        user.displayName = newUsername;
+
+        // Update Header Greeting
+        const greetingEl = document.getElementById('header-greeting');
+        if (greetingEl) {
+          const hour = new Date().getHours();
+          let tod = 'evening 🌙';
+          if (hour < 12) tod = 'morning 🌅';
+          else if (hour < 17) tod = 'afternoon ☀️';
+          
+          greetingEl.textContent = `Good ${tod}, ${newUsername}`;
+        }
+        
+        const displayUsernameEl = document.getElementById('current-username-display');
+        if (displayUsernameEl) displayUsernameEl.textContent = newUsername;
+        
+        if (profileView) profileView.style.display = 'block';
+        if (profileForm) profileForm.style.display = 'none';
+
+        profileModal.classList.remove('active');
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert(`Failed to update profile: ${error.message}`);
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
 
   // Setup Add Expense/Income Modals
   const modal = document.getElementById('add-expense-modal');
@@ -364,6 +464,12 @@ function showDashboard(user) {
         tabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
+        // Update year stepper visibility
+        const yearStepper = document.getElementById('chart-year-stepper');
+        if (yearStepper) {
+          yearStepper.style.display = (targetTab === 'trends' || targetTab === 'comparison') ? 'flex' : 'none';
+        }
+
         // Update Cards
         chartCards.forEach(card => {
           card.classList.remove('active');
@@ -372,6 +478,30 @@ function showDashboard(user) {
           }
         });
       });
+    });
+  }
+
+  // Set initial year label
+  const chartYearLabel = document.getElementById('chart-year-label');
+  if (chartYearLabel) {
+    chartYearLabel.textContent = currentChartYear;
+  }
+
+  const chartPrevYearBtn = document.getElementById('chart-prev-year');
+  if (chartPrevYearBtn) {
+    chartPrevYearBtn.addEventListener('click', () => {
+      currentChartYear--;
+      if (chartYearLabel) chartYearLabel.textContent = currentChartYear;
+      renderExpenses();
+    });
+  }
+
+  const chartNextYearBtn = document.getElementById('chart-next-year');
+  if (chartNextYearBtn) {
+    chartNextYearBtn.addEventListener('click', () => {
+      currentChartYear++;
+      if (chartYearLabel) chartYearLabel.textContent = currentChartYear;
+      renderExpenses();
     });
   }
 
@@ -388,19 +518,16 @@ function showDashboard(user) {
 
     // Milder Pastel Palette matching the theme
     // Expanded to 12 colors for the bar chart
+    // Color Hunt Palettes (#C599B6, #E6B2BA, #FAD0C4, #FFF7F3) and (#FF8F8F, #FFF1CB, #C2E2FA, #B7A3E3)
     const pastelColors = [
-      '#60a5fa', // Blue
-      '#34d399', // Emerald
-      '#fbbf24', // Amber
-      '#f87171', // Red
-      '#818cf8', // Indigo
-      '#c084fc', // Purple
-      '#22d3ee', // Cyan
-      '#f472b6', // Pink
-      '#a3e635', // Lime
-      '#fb923c', // Orange
-      '#2dd4bf', // Teal
-      '#38bdf8'  // Sky
+      '#FF8F8F', // Soft Red
+      '#C2E2FA', // Soft Blue
+      '#B7A3E3', // Soft Purple
+      '#C599B6', // Muted Purple
+      '#E6B2BA', // Muted Pink
+      '#FAD0C4', // Muted Peach
+      '#FFF1CB', // Warm Cream
+      '#FFF7F3'  // Soft White
     ];
 
     const pieData = {
@@ -448,26 +575,15 @@ function showDashboard(user) {
       }
     });
 
-    // 2. Bar Chart Logic (last 12 months from LATEST transaction or Today)
+    // 2. Bar Chart Logic (Calendar Year: Jan - Dec)
     const monthlyTotals = {};
+    const monthsInYear = [];
+    const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // Find latest date in expenses to determine the 12-month window
-    let latestDate = new Date();
-    if (allExpenses.length > 0) {
-      const maxDate = new Date(Math.max(...allExpenses.map(e => new Date(e.date))));
-      if (maxDate > latestDate) {
-        latestDate = maxDate;
-      }
-    }
-
-    const last12Months = [];
-
-    for (let i = 11; i >= 0; i--) {
-      const d = new Date(latestDate.getFullYear(), latestDate.getMonth() - i, 1);
-      const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      const label = d.toLocaleDateString('default', { month: 'short', year: '2-digit' }); // Added year for clarity
+    for (let i = 0; i < 12; i++) {
+      const monthYear = `${currentChartYear}-${String(i + 1).padStart(2, '0')}`;
       monthlyTotals[monthYear] = 0;
-      last12Months.push({ key: monthYear, label: label });
+      monthsInYear.push({ key: monthYear, label: shortMonths[i] });
     }
 
     allExpenses.forEach(exp => {
@@ -482,10 +598,10 @@ function showDashboard(user) {
     });
 
     const barData = {
-      labels: last12Months.map(m => m.label),
+      labels: monthsInYear.map(m => m.label),
       datasets: [{
         label: 'Monthly Spending',
-        data: last12Months.map(m => monthlyTotals[m.key]),
+        data: monthsInYear.map(m => monthlyTotals[m.key]),
         backgroundColor: pastelColors, /* Use the colorful palette */
         borderRadius: 6,
         barPercentage: 0.9,
@@ -528,8 +644,8 @@ function showDashboard(user) {
       const monthlyIncome = {};
       const monthlyExpenses = {};
 
-      // Initialize with 0 for last 12 months
-      last12Months.forEach(m => {
+      // Initialize with 0 for calendar year
+      monthsInYear.forEach(m => {
         monthlyIncome[m.key] = 0;
         monthlyExpenses[m.key] = 0;
       });
@@ -548,11 +664,11 @@ function showDashboard(user) {
       });
 
       const incomeExpenseData = {
-        labels: last12Months.map(m => m.label),
+        labels: monthsInYear.map(m => m.label),
         datasets: [
           {
             label: 'Income',
-            data: last12Months.map(m => monthlyIncome[m.key]),
+            data: monthsInYear.map(m => monthlyIncome[m.key]),
             borderColor: '#10b981', // Success Green
             backgroundColor: 'rgba(16, 185, 129, 0.1)',
             tension: 0.4,
@@ -562,7 +678,7 @@ function showDashboard(user) {
           },
           {
             label: 'Expenses',
-            data: last12Months.map(m => monthlyExpenses[m.key]),
+            data: monthsInYear.map(m => monthlyExpenses[m.key]),
             borderColor: '#ef4444', // Danger Red
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
             tension: 0.4,
@@ -1196,7 +1312,7 @@ function showDashboard(user) {
         insights.push({
           icon: 'bi-exclamation-circle',
           title: 'Spending Spike',
-          text: `Spending is higher than ${prevMonthDate.toLocaleDateString('default', { month: 'short' })}. Keep an eye on your bills!`,
+          text: `Spending is higher than ${prevMonthDate.toLocaleDateString('default', { month: 'short' })}. Keep an eye on your bills!  ⚠️`,
           color: 'warning'
         });
       }
@@ -1249,7 +1365,7 @@ function showDashboard(user) {
       insights.push({
         icon: 'bi-lightning-charge',
         title: 'Power Tip',
-        text: `You saved ₹${savings.toFixed(0)} this month! consider moving this to your emergency fund. 💰`,
+        text: `You saved ₹${savings.toFixed(0)} this month! Consider moving this to your emergency fund. 💰`,
         color: 'success'
       });
     } else {
@@ -1356,7 +1472,7 @@ function showDashboard(user) {
         msg = "🙂 You've used over half your budget — slow down a little.";
         cls = 'budget-message--warn';
       } else if (rawPct <= 100) {
-        msg = "😬 Careful! You've almost reached your limit. Only ₹" + remaining.toFixed(0) + " left.";
+        msg = "😬 Careful! Only ₹" + remaining.toFixed(0) + " left of your budget.";
         cls = 'budget-message--warn';
       } else {
         msg = "🛑 You've gone over budget by ₹" + (currentMonthExpenses - limit).toFixed(0) + ". Time to pause spending!";
@@ -1416,6 +1532,7 @@ function showDashboard(user) {
     });
   }
 
+  
   expensesCleanup = subscribeToExpenses(user.uid, (expenses) => {
     allExpenses = expenses;
     updateFilterOptions();
