@@ -15,6 +15,10 @@ export const registerUser = async (username, email, password) => {
     return userCredential;
 };
 
+export const updateUsername = async (user, newUsername) => {
+    return updateProfile(user, { displayName: newUsername });
+};
+
 
 
 export const loginUser = (email, password) => {

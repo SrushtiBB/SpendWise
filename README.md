@@ -11,37 +11,44 @@ SpendWise is a modern web app that helps you manage your money with confidence. 
 ## ✨ Highlights
 
 - 📌 Simple and intuitive expense tracking
-- 📊 Interactive analytics and visual reports
+- 📊 Interactive analytics and reports with Calendar-Year selectors
+- 👤 Profile management tools for user personalization
 - 🎯 Monthly budgeting with progress indicators
 - 🔍 Fast search and transaction management tools
-- 🌗 Light/Dark theme support for better usability
+- 🌗 Light/Dark theme support with responsive aesthetics
 
 ---
 
 ## 🚀 Features
 
-### 🔐 Authentication
+### 🔐 Authentication & Profile
+
 - Sign up and log in securely using email/password
 - Session-based authentication with Firebase
+- Update profile username instantly from the dashboard
 
 ### 💰 Transactions
+
 - Add income and expense entries
 - Update or delete existing transactions
 - Search transactions instantly
 - Select multiple entries for bulk delete workflows
 
 ### 📈 Insights & Analytics
-- Real-time balance, total income, and total expense cards
+
+- Real-time balance, total income, and total expense metrics (Refined minimalist design)
 - Category distribution chart
-- Monthly trend chart
+- Monthly trend chart inside 12-month calendar scopes (Prev/Next navigation arrows included to view analytics of neighboring years)
 - Income vs expense comparison chart
 
 ### 🧾 Budgeting
+
 - Set monthly budget targets
 - Visual budget utilization progress
 - Dynamic warnings when nearing or exceeding budget
 
 ### 🎨 User Experience
+
 - Responsive layout for desktop and smaller screens
 - Personalized dashboard greeting
 - Theme preference (light/dark) saved locally
@@ -51,7 +58,6 @@ SpendWise is a modern web app that helps you manage your money with confidence. 
 - **Frontend:** HTML, CSS, JavaScript (Vite)
 - **Charts:** Chart.js
 - **Backend Services:** Firebase Authentication + Cloud Firestore
-
 - **Frontend:** HTML, CSS, JavaScript (Vite)
 - **Charts:** Chart.js
 - **Backend Services:** Firebase Authentication + Cloud Firestore

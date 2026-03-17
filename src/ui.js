@@ -80,7 +80,7 @@ export const renderDashboard = (user) => {
           <img src="/assets/logo2.svg" alt="SpendWise Logo" class="brand-logo" style="width: 44px; height: 44px; margin: 0;" />
           <div>
             <h1 class="brand-name" style="font-size: 1.6rem; line-height: 1.1; margin: 0;">SpendWise</h1>
-            <p class="header-greeting" id="header-greeting">${(() => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'; })()}, ${user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'there'} 👋</p>
+            <p class="header-greeting" id="header-greeting">${(() => { const h = new Date().getHours(); return h < 12 ? 'Good morning 🌅' : h < 17 ? 'Good afternoon ☀️' : 'Good evening 🌙'; })()}, ${user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'there'}</p>
           </div>
         </div>
 
@@ -91,6 +91,7 @@ export const renderDashboard = (user) => {
             <input type="checkbox" id="theme-toggle-input">
             <span class="slider round"></span>
           </label>
+          <button id="profile-btn" class="btn-secondary" title="Edit Profile"><i class="bi bi-person-fill"></i> Profile</button>
           <button id="logout-btn" class="btn-secondary"><i class="bi bi-box-arrow-right"></i> Logout</button>
         </div>
       </header>
@@ -200,6 +201,17 @@ export const renderDashboard = (user) => {
                 </button>
                 <button class="chart-tab-btn" data-tab="comparison">
                   <i class="bi bi-bar-chart"></i> Comparison
+                </button>
+              </div>
+
+              <!-- Year Navigation -->
+              <div class="year-stepper" id="chart-year-stepper" style="display: none; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                <button id="chart-prev-year" class="stepper-btn" title="Previous Year">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+                <span id="chart-year-label" class="stepper-label" style="min-width: 60px; text-align: center; font-weight: 600; font-size: 1.1rem;">YYYY</span>
+                <button id="chart-next-year" class="stepper-btn" title="Next Year">
+                  <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
 
@@ -341,6 +353,34 @@ export const renderDashboard = (user) => {
                 <div class="modal-actions">
                     <button type="button" id="close-budget-modal-btn" class="btn-secondary">Cancel</button>
                     <button type="submit" style="background: var(--primary-color); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 0.8rem; font-weight: 600; cursor: pointer;">Save Limit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+
+      <!-- Edit Profile Modal -->
+      <div id="edit-profile-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3>Profile Settings</h3>
+            
+            <!-- View Mode -->
+            <div id="profile-view-mode">
+                <p style="margin-bottom: 1.5rem; font-size: 1rem; color: var(--text-color);">Username: <strong id="current-username-display" style="color: var(--accent-peach);">${user.displayName || 'No name set'}</strong></p>
+                <div class="modal-actions">
+                    <button type="button" id="close-profile-modal-btn" class="btn-secondary">Close</button>
+                    <button type="button" id="enable-edit-profile-btn" style="background: var(--primary-color); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 0.8rem; font-weight: 600; cursor: pointer;">Edit Username</button>
+                </div>
+            </div>
+
+            <!-- Edit Mode (Hidden initially) -->
+            <form id="edit-profile-form" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem;">New Username</label>
+                    <input type="text" name="username" placeholder="New Username" required style="width: 100%; box-sizing: border-box;" value="${user.displayName || ''}" />
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-edit-profile-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" style="background: var(--primary-color); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 0.8rem; font-weight: 600; cursor: pointer;">Save Changes</button>
                 </div>
             </form>
         </div>
